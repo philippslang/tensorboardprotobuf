@@ -1,32 +1,18 @@
 #include "record.h"
 #include "event.pb.h"
 
+namespace tbproto {
 
-namespace tbproto
-{
+struct RecordPipml {
+  tensorflow::Event e;
+};
 
-  struct RecordPipml
-  {
-    tensorflow::Event e;
-  };
+Record::Record() : m(new RecordPipml(), [](RecordPipml *v) { delete v; }) {
+  init();
+}
 
-  
-  Record::Record():
-    m(new RecordPipml(), [](RecordPipml* v){delete v;})
-    {
-      init();
-    }
+void Record::set_step(int64_t step) { m->e.set_step(step); }
 
+void Record::init() { m->e.set_wall_time(0); }
 
-  void Record::set_step(int64_t step)
-    {
-      m->e.set_step(step);
-    }
-
-
-  void Record::init()
-    {
-      m->e.set_wall_time(0);
-    }  
-
-}  // tbproto
+} // tbproto
