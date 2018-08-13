@@ -7,7 +7,7 @@ based off https://github.com/shaochuan/cmake-protobuf-example
 #cd into protobuf source dir
 mkdir build
 cd build
-cmake -DBUILD_SHARED_LIBS=1 ../cmake
+cmake -DBUILD_SHARED_LIBS=1 -DCMAKE_INSTALL_PREFIX=/usr ../cmake
 cmake --build . -- -j 8
 cmake --build . --target install
 ```
