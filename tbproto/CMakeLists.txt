@@ -1,7 +1,12 @@
 include(FindProtobuf)
 find_package(Protobuf REQUIRED)
-include_directories(${PROTOBUF_INCLUDE_DIR})
+
 file(GLOB ProtoFiles "${CMAKE_CURRENT_SOURCE_DIR}/*.proto")
 protobuf_generate_cpp(PROTO_SRC PROTO_HEADER ${ProtoFiles})
-add_library(tbproto SHARED ${PROTO_HEADER} ${PROTO_SRC})
+set(SOURCES record.cpp record.h)
+set(INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR} ${PROTOBUF_INCLUDE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+add_library(tbproto SHARED ${PROTO_HEADER} ${PROTO_SRC} ${SOURCES})
+target_include_directories(tbproto PUBLIC ${INCLUDE_DIRS})
 target_link_libraries(tbproto ${Protobuf_LIBRARIES})
+
+
