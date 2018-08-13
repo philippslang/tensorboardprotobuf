@@ -1,9 +1,9 @@
-PROJECT(tensorboardprotobuf)
-CMAKE_MINIMUM_REQUIRED (VERSION 3.5)
-SET(CMAKE_CXX_FLAGS "-g -Wall -Werror -std=c++14")
+project(tensorboardprotobuf)
+cmake_minimum_required(VERSION 3.6)
+set(CMAKE_CXX_FLAGS "-g -Wall -Werror -std=c++14")
 
-ADD_SUBDIRECTORY(tbproto)
+add_subdirectory(tbproto)
 
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
-ADD_EXECUTABLE(main main.cpp)
-TARGET_LINK_LIBRARIES(main tbproto ${PROTOBUF_LIBRARY})
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+add_executable(main main.cpp)
+target_link_libraries(main tbproto)
