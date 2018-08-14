@@ -30,31 +30,31 @@ struct Record::RecordPipml {
 };
 
 Record::Record()
-    : m(new Record::RecordPipml(), [](RecordPipml *v) { delete v; }) {
+    : mproto(new Record::RecordPipml(), [](RecordPipml *v) { delete v; }) {
   set_time_to_now();
 }
 
-void Record::set_step(int64_t step) { m->e->set_step(step); }
+void Record::set_step(int64_t step) { mproto->e->set_step(step); }
 
-int64_t Record::step() const { return m->e->step(); }
+int64_t Record::step() const { return mproto->e->step(); }
 
 void Record::set_time_to_now() {
   auto epoch_time = std::chrono::system_clock::now().time_since_epoch();
   auto seconds =
       std::chrono::duration_cast<std::chrono::seconds>(epoch_time).count();
-  m->e->set_wall_time(static_cast<double>(seconds));
+  mproto->e->set_wall_time(static_cast<double>(seconds));
 }
 
 void Record::add_scalar(std::string_view tag, float value) {
-  auto *v = m->s->add_value();
+  auto *v = mproto->s->add_value();
   v->set_tag(tag.data());
   v->set_simple_value(value);
 }
 
-std::string Record::data() const {
-  std::string data;
-  set_event_summary(m->e, m->s);
-  m->e->SerializeToString(&data);
+Record::pbyte_t Record::data() const {
+  pbyte_t data;
+  set_event_summary(mproto->e, mproto->s);
+  mproto->e->SerializeToString(&data);
   return data;
 }
 
