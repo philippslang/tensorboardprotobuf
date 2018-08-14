@@ -1,10 +1,8 @@
 #ifndef TBPROTO_RUN_H
 #define TBPROTO_RUN_H
 
-#include <chrono>
 #include <optional>
 #include <string>
-#include <string_view>
 
 namespace tbproto {
 
@@ -23,15 +21,16 @@ public:
   Run();
   explicit Run(const RunSettings &);
 
-  const RunSettings &settings() const { return *msettings; }
-  void set_settings(const RunSettings &settings) { msettings = settings; }
+  RunSettings &settings() { return msettings; }
+  const RunSettings &settings() const { return msettings; }
 
   void write(const Record &);
 
 private:
-  using date_t = std::chrono::time_point<std::chrono::system_clock>;
-  std::optional<date_t> mstart;
+  std::string_view init_file();
+
   RunSettings msettings;
+  std::optional<std::string> mfname;
 };
 
 } // namespace tbproto
