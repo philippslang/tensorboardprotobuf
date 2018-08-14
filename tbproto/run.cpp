@@ -38,9 +38,9 @@ std::ofstream Run::file() {
 
 void Run::write(const Record &record) {
   auto f = file();
-  f.close();
   // construct
   // write record
+  f.close();
 }
 
 } // namespace tbproto
