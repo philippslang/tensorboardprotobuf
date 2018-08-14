@@ -3,22 +3,25 @@
 
 #include <cstdint>
 #include <memory>
+#include <string_view>
 
 namespace tbproto {
 
-struct RecordPipml;
-
 class Record {
 
+  struct RecordPipml;
   std::unique_ptr<RecordPipml, void (*)(RecordPipml *)> m;
-
-  void init();
 
 public:
   Record();
 
   void set_step(int64_t step);
+  int64_t step() const;
+  void set_time_to_now();
+  void add_scalar(std::string_view tag, float value);
+  std::string data() const;
 };
-}
+
+} // namespace tbproto
 
 #endif

@@ -3,6 +3,7 @@
 
 int main(int argc, char const *argv[]) {
   tbproto::Record r;
-  std::cout << "Hello Proto!" << std::endl;
+  r.add_scalar("my/value", 0.0);
+  std::cout << r.data();
   return 0;
 }
