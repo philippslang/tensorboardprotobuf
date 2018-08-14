@@ -1,8 +1,11 @@
 # tensorboardprotobuf
-Protocol buffers for Tensorboard interface
+Write input files (protobuffers) for Tensorboard with minimal dependencies (protobuf libs)
 
-based off https://github.com/shaochuan/cmake-protobuf-example
+## Interface
+There are only two classes implementing the interface for this library: `Run` and `Record`. A `Run` instance is tied to one tensorboard input file and contains an arbitrary number of `Record` instances. A `Record` is tied to a step and contains scalar values (images etc...) tbd.
 
+
+## Installation
 ```
 #cd into protobuf source dir
 mkdir build
@@ -19,11 +22,6 @@ cmake ..
 cmake --build .
 ```
 
-```
-docker run -it --rm --mount type=bind,source=$(pwd),target=/tensorboardix ixdev.azurecr.io/ixtensorboard:latest /bin/bash
-```
-
-
+## Notes
 used 2cbcc471d6340fac1ceca9b9559f62ec2d71a769 for proto definitions from https://github.com/tensorflow/tensorflow/
 
-12
