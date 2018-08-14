@@ -1,6 +1,7 @@
 #ifndef TBPROTO_RUN_H
 #define TBPROTO_RUN_H
 
+#include <fstream>
 #include <optional>
 #include <string>
 
@@ -27,7 +28,7 @@ public:
   void write(const Record &);
 
 private:
-  std::string_view init_file();
+  std::ofstream file();
 
   RunSettings msettings;
   std::optional<std::string> mfname;

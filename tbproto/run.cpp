@@ -10,7 +10,8 @@ namespace tbproto {
 Run::Run() {}
 Run::Run(const RunSettings &settings) : msettings(settings) {}
 
-std::string_view Run::init_file() {
+std::ofstream Run::file() {
+  std::ofstream f;
   if (!mfname) {
     auto t = std::time(nullptr);
     char bstr[100];
@@ -22,14 +23,20 @@ std::string_view Run::init_file() {
       // todo throw
     }
 
-    // write header (version record)
+    f.open(mfname->c_str(), std::ofstream::out | std::ios::binary);
+  } else {
+    f.open(mfname->c_str(),
+           std::ofstream::out | std::ofstream::app | std::ios::binary);
   }
-  return *mfname;
+  if (!f.is_open()) {
+    // todo throw
+  }
+  return f;
 }
 
 void Run::write(const Record &record) {
-  auto fname = init_file();
-  std::cout << fname;
+  auto f = file();
+  f.close();
   // construct
   // write record
 }
