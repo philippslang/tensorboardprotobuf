@@ -3,6 +3,7 @@
 
 #include <ctime>
 #include <iostream>
+#include <stdexcept>
 #include <string_view>
 
 namespace tbproto {
@@ -12,6 +13,7 @@ Run::Run(const RunSettings &settings) : msettings(settings) {}
 
 std::ofstream Run::file() {
   std::ofstream f;
+  std::string open_error_msg{"new file"};
   if (!mfname) {
     auto t = std::time(nullptr);
     char bstr[100];
@@ -20,16 +22,16 @@ std::ofstream Run::file() {
       mfname = {msettings.root_folder_name + "/" + msettings.run_name + "/" +
                 "events.out.tfevents." + bstr};
     } else {
-      // todo throw
+      throw std::runtime_error("cannot parse time");
     }
-
     f.open(mfname->c_str(), std::ofstream::out | std::ios::binary);
   } else {
     f.open(mfname->c_str(),
            std::ofstream::out | std::ofstream::app | std::ios::binary);
+    open_error_msg = "existing file";
   }
   if (!f.is_open()) {
-    // todo throw
+    throw std::runtime_error("cannot open " + open_error_msg + " " + *mfname);
   }
   return f;
 }

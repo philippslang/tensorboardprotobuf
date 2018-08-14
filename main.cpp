@@ -7,5 +7,6 @@ int main(int argc, char const *argv[]) {
   rec.add_scalar("my/value", 0.0);
   tbproto::Run run;
   run.write(rec);
+  run.write(rec);
   return 0;
 }
