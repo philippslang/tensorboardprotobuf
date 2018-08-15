@@ -1,5 +1,6 @@
 # tensorboardprotobuf
-Write input files (protobuffers) for Tensorboard with minimal dependencies (protobuf libs)
+Write input files (protobuffers) for Tensorboard with minimal dependencies (protobuf libs). Downside is we shamelessly duplicate the
+protobuf files from the tensorflow repo.
 
 ## Interface
 There are only two classes implementing the interface for this library: `Run` and `Record`. A `Run` instance is tied to one tensorboard input file and contains an arbitrary number of `Record` instances. A `Record` is tied to a step and contains scalar values (images etc...) tbd.
