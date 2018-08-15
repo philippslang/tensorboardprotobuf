@@ -51,9 +51,9 @@ void open_file(std::ofstream &f, std::string_view fname, bool is_new) {
   } else {
     f.open(fname.data(),
            std::ofstream::out | std::ofstream::app | std::ios::binary);
-    if (!f.is_open()) {
-      throw std::runtime_error("cannot open run file " + std::string(fname));
-    }
+  }
+  if (!f.is_open()) {
+    throw std::runtime_error("cannot open run file " + std::string(fname));
   }
 }
 
@@ -62,8 +62,6 @@ void open_file(std::ofstream &f, std::string_view fname, bool is_new) {
 namespace tbproto {
 
 Run::Run() {}
-
-Run::Run(const RunSettings &settings) : msettings(settings) {}
 
 // Provides a valid file for record writing
 //
@@ -78,8 +76,7 @@ std::ofstream Run::file() {
     char bstr[100];
     if (std::strftime(bstr, sizeof(bstr), "%Y%m%dT%H%M%S",
                       std::localtime(&t))) {
-      mfname = {msettings.root_folder_name + "/" + msettings.run_name + "/" +
-                "events.out.tfevents." + bstr};
+      mfname = std::string("events.out.tfevents." + std::string(bstr));
     } else {
       throw std::runtime_error("cannot parse time");
     }
