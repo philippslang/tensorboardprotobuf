@@ -18,8 +18,6 @@ limitations under the License.
 
 #include "crc32c.h"
 
-#include <cstring>
-
 namespace tensorflow {
 namespace crc32c {
 

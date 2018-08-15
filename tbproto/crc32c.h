@@ -18,6 +18,7 @@ limitations under the License.
 
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 
 namespace tensorflow {
 namespace crc32c {
@@ -46,6 +47,23 @@ inline uint32_t Mask(uint32_t crc) {
 inline uint32_t Unmask(uint32_t masked_crc) {
   uint32_t rot = masked_crc - kMaskDelta;
   return ((rot >> 17) | (rot << 15));
+}
+
+// from
+// https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/lib/io/record_writer.cc
+inline uint32_t MaskedCrc(const char *data, size_t n) {
+  return Mask(Value(data, n));
+}
+
+// from
+// https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/lib/core/coding.cc
+// little endian specialized, not really needed but descriptive
+inline void EncodeFixed32(char *buf, uint32_t value) {
+  std::memcpy(buf, &value, sizeof(value));
+}
+
+inline void EncodeFixed64(char *buf, uint64_t value) {
+  std::memcpy(buf, &value, sizeof(value));
 }
 
 } // namespace crc32c

@@ -7,6 +7,7 @@ There are only two classes implementing the interface for this library: `Run` an
 
 
 ## Installation
+https://github.com/google/protobuf/releases/download/v3.6.1/protobuf-cpp-3.6.1.tar.gz
 ```
 #cd into protobuf source dir
 mkdir build
@@ -27,13 +28,12 @@ cmake --build .
 used 2cbcc471d6340fac1ceca9b9559f62ec2d71a769 for proto definitions from https://github.com/tensorflow/tensorflow/
 
 ## License
-All novel contributions under MIT license. 
-
-Tensorflow components
+Under MIT license. From Tensorflow components
 - All protobuf files
-- https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/lib/hash/crc32c.cc
+- run.cpp record write method
+- tbproto/crc32.cc adapted from https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/lib/hash/crc32c.cc, https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/lib/io/record_writer.cc, https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/lib/core/raw_coding.h, https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/lib/core/coding.h
 
-under the following terms
+we inherit the following 
 
 ```
 Copyright 2015 The TensorFlow Authors. All Rights Reserved.

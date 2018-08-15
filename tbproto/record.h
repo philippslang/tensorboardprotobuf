@@ -17,6 +17,8 @@ public:
   int64_t step() const;
   void set_step(int64_t step);
 
+  void set_file_version(std::string_view tag);
+
   void add_scalar(std::string_view tag, float value);
 
   pbyte_t data() const;

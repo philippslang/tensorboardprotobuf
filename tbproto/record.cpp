@@ -51,6 +51,10 @@ void Record::add_scalar(std::string_view tag, float value) {
   v->set_simple_value(value);
 }
 
+void Record::set_file_version(std::string_view tag) {
+  mproto->e->set_file_version(tag.data());
+}
+
 Record::pbyte_t Record::data() const {
   pbyte_t data;
   set_event_summary(mproto->e, mproto->s);
