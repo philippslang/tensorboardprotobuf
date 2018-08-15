@@ -1,6 +1,6 @@
 #include "run.h"
-#include "crc32c.h"
 #include "record.h"
+#include "tensorflow/crc32c.h"
 
 #include <ctime>
 #include <iostream>
