@@ -10,10 +10,11 @@
 namespace {
 
 void write_record(const tbproto::Record &record, std::ofstream &f) {
-  // https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/lib/io/record_writer.cc#L95
+
   if (!f.is_open() or f.bad()) {
     throw std::runtime_error("file not valid to write record");
   }
+  // https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/lib/io/record_writer.cc#L95
   // Format of a single record:
   //  uint64    length
   //  uint32    masked crc of length

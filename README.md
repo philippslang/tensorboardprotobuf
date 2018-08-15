@@ -1,5 +1,5 @@
 # tensorboardprotobuf
-Write input files (protobuffers) for Tensorboard with minimal dependencies (protobuf libs). Downside is we shamelessly duplicate the
+Write result files (protobuffers) for Tensorboard with minimal dependencies (protobuf libs). Downside is we shamelessly duplicate the
 protobuf files from the tensorflow repo.
 
 ## Interface
@@ -25,15 +25,19 @@ cmake --build .
 ```
 
 ## Notes
-used 2cbcc471d6340fac1ceca9b9559f62ec2d71a769 for proto definitions from https://github.com/tensorflow/tensorflow/
+
+Shout out to https://github.com/PaddlePaddle/board/tree/fileWriterTensorBoard/PaddleTensorBoardDemo for their high-level summary on how tensorflow writes data consumed by tensorboard.
 
 ## License
-Under MIT license. From Tensorflow components
-- All protobuf files
-- run.cpp record write method
-- tbproto/crc32.cc adapted from https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/lib/hash/crc32c.cc, https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/lib/io/record_writer.cc, https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/lib/core/raw_coding.h, https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/lib/core/coding.h
 
-we inherit the following 
+Under MIT license. From Tensorflow components (`tbproto/tensorflow/*`) taken from 
+https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/framework/resource_handle.proto
+https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/framework/tensor.proto
+https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/framework/types.proto
+https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/framework/event.proto
+https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/framework/summary.proto
+https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/lib/hash/crc32c.cc, https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/lib/io/record_writer.cc, https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/lib/core/raw_coding.h, https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/lib/core/coding.h
+commit 2cbcc471d6340fac1ceca9b9559f62ec2d71a769 we inherit the following 
 
 ```
 Copyright 2015 The TensorFlow Authors. All Rights Reserved.
