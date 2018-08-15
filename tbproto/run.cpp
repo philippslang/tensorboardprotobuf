@@ -62,6 +62,7 @@ void open_file(std::ofstream &f, std::string_view fname, bool is_new) {
 namespace tbproto {
 
 Run::Run() {}
+
 Run::Run(const RunSettings &settings) : msettings(settings) {}
 
 // Provides a valid file for record writing

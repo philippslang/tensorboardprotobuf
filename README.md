@@ -1,10 +1,9 @@
 # tensorboardprotobuf
 Write result files (protobuffers) for Tensorboard with minimal dependencies (protobuf libs). Downside is we shamelessly duplicate the
-protobuf files from the tensorflow repo.
+protobuf files from the tensorflow repo. Basically [tensorboardX](https://github.com/lanpa/tensorboardX) for C++.
 
 ## Interface
 There are only two classes implementing the interface for this library: `Run` and `Record`. A `Run` instance is tied to one tensorboard input file and contains an arbitrary number of `Record` instances. A `Record` is tied to a step and contains scalar values (images etc...) tbd.
-
 
 ## Installation
 https://github.com/google/protobuf/releases/download/v3.6.1/protobuf-cpp-3.6.1.tar.gz
@@ -23,10 +22,12 @@ cd build
 cmake ..
 cmake --build .
 ```
+## References
 
-## Notes
+https://github.com/tensorflow/tensorflow/
+https://github.com/lanpa/tensorboardX
+https://github.com/PaddlePaddle/board/tree/fileWriterTensorBoard/PaddleTensorBoardDemo 
 
-Shout out to https://github.com/PaddlePaddle/board/tree/fileWriterTensorBoard/PaddleTensorBoardDemo for their high-level summary on how tensorflow writes data consumed by tensorboard.
 
 ## License
 

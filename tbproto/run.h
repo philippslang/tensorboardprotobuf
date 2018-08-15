@@ -25,7 +25,7 @@ public:
   Run();
   explicit Run(const RunSettings &);
 
-  RunSettings settings() const { return msettings; }
+  const RunSettings &settings() const { return msettings; }
 
   void write(const Record &);
 
