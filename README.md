@@ -22,6 +22,10 @@ cd build
 cmake ..
 cmake --build .
 ```
+or in container
+```
+docker run -it --rm --mount type=bind,source=$(pwd),target=/tbproto philipplang/gccprotobuf:latest /bin/bash
+```
 ## References
 
 https://github.com/tensorflow/tensorflow/

@@ -4,8 +4,13 @@
 #include <cstdint>
 #include <memory>
 #include <string_view>
+#include <variant>
 
 namespace tbproto {
+
+struct Scalar;
+struct Tensor;
+struct Histogram;
 
 class Record {
 public:
@@ -19,7 +24,8 @@ public:
 
   void set_file_version(std::string_view tag);
 
-  void add_scalar(std::string_view tag, float value);
+  void add(std::string_view tag,
+           const std::variant<Scalar, Tensor, Histogram> &value);
 
   pbyte_t data() const;
 

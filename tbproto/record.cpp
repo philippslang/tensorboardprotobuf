@@ -1,6 +1,7 @@
 #include "record.h"
 #include "event.pb.h"
 #include "summary.pb.h"
+#include "types.h"
 
 #include <google/protobuf/arena.h>
 
@@ -12,6 +13,21 @@ namespace {
 void set_event_summary(tensorflow::Event *e, tensorflow::Summary *s) {
   e->set_allocated_summary(s);
 }
+
+struct ValueTypeVisitor {
+  tensorflow::Summary *s = nullptr;
+  std::string_view tag;
+
+  void operator()(tbproto::Scalar const &arg) {
+    auto *v = s->add_value();
+    v->set_tag(tag.data());
+    v->set_simple_value(arg.value);
+  }
+
+  void operator()(tbproto::Tensor const &arg) {}
+
+  void operator()(tbproto::Histogram const &arg) {}
+};
 
 } // namespace
 
@@ -45,10 +61,12 @@ void Record::set_time_to_now() {
   mproto->e->set_wall_time(static_cast<double>(seconds));
 }
 
-void Record::add_scalar(std::string_view tag, float value) {
-  auto *v = mproto->s->add_value();
-  v->set_tag(tag.data());
-  v->set_simple_value(value);
+void Record::add(std::string_view tag,
+                 const std::variant<Scalar, Tensor, Histogram> &value) {
+  ValueTypeVisitor value_visitor;
+  value_visitor.s = mproto->s;
+  value_visitor.tag = tag;
+  std::visit(value_visitor, value);
 }
 
 void Record::set_file_version(std::string_view tag) {
