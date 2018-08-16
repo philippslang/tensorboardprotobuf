@@ -14,21 +14,22 @@ tbproto::Run run;
 
 // first iteration (e.g.)
 {
-tbproto::Record rec;
-rec.set_step(0);
-rec.add("my/value", tbproto::Scalar(0.0));
-rec.add("my/othervalue", tbproto::Scalar(1.0));
-run.write(rec);
+  tbproto::Record rec;
+  rec.set_step(0);
+  rec.add("my/value", tbproto::Scalar(0.0));
+  rec.add("my/othervalue", tbproto::Scalar(1.0));
+  run.write(rec);
 }
 // second iteration (e.g.)
 {
-tbproto::Record rec;
-rec.set_step(1);
-rec.add("my/value", tbproto::Scalar(1.0));
-rec.add("my/othervalue", tbproto::Scalar(0.8));
-run.write(rec);
+  tbproto::Record rec;
+  rec.set_step(1);
+  rec.add("my/value", tbproto::Scalar(1.0));
+  rec.add("my/othervalue", tbproto::Scalar(0.8));
+  run.write(rec);
 }
 ```
+will write a file `events.out.tfevents.<isotime>` to the working directory.
 
 ## Installation
 https://github.com/google/protobuf/releases/download/v3.6.1/protobuf-cpp-3.6.1.tar.gz
