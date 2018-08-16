@@ -7,7 +7,17 @@ Platform | Build status
 Linux (gcc-8 -std=c++17)| [![Build Status](https://travis-ci.org/plang85/tensorboardprotobuf.svg?branch=master)](https://travis-ci.org/plang85/tensorboardprotobuf)
 
 ## Interface
-There are only two classes implementing the interface for this library: `Run` and `Record`. A `Run` instance is tied to one tensorboard input file and contains an arbitrary number of `Record` instances. A `Record` is tied to a step and contains scalar values (images etc...) tbd.
+The interface is intentionally kept to a minmum: A `Run` instance is tied to one tensorboard input file and contains an arbitrary number of `Record` instances. A `Record` is tied to a step and contains values (scalars, tensors, etc...) listed in `types.h`.
+
+```
+tbproto::Run run;
+tbproto::Record rec0, rec1;
+rec0.add("my/value", tbproto::Scalar(0.0));
+run.write(rec0);
+rec1.set_step(1);
+rec1.add("my/value", tbproto::Scalar(1.0));
+run.write(rec1);
+```
 
 ## Installation
 https://github.com/google/protobuf/releases/download/v3.6.1/protobuf-cpp-3.6.1.tar.gz
