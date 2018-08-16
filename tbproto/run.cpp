@@ -3,6 +3,7 @@
 #include "tensorflow/crc32c.h"
 
 #include <ctime>
+#include <fstream>
 #include <iostream>
 #include <stdexcept>
 #include <string_view>
@@ -57,39 +58,39 @@ void open_file(std::ofstream &f, std::string_view fname, bool is_new) {
   }
 }
 
-} // namespace
-
-namespace tbproto {
-
-Run::Run() {}
-
 // Provides a valid file for record writing
 //
 // Uses mfname as proxy of whether file has not been created
 // yet (in which case we create it and write header) or if
 // file exists (in which case it is opened in append mode).
 // Returns file stream and sets mfname if new.
-std::ofstream Run::file() {
+std::ofstream file(std::optional<std::string> &fname) {
   std::ofstream f;
-  if (!mfname) {
+  if (!fname) {
     auto t = std::time(nullptr);
     char bstr[100];
     if (std::strftime(bstr, sizeof(bstr), "%Y%m%dT%H%M%S",
                       std::localtime(&t))) {
-      mfname = std::string("events.out.tfevents." + std::string(bstr));
+      fname = std::string("events.out.tfevents." + std::string(bstr));
     } else {
       throw std::runtime_error("cannot parse time");
     }
-    open_file(f, *mfname, true);
+    open_file(f, *fname, true);
     write_header(f);
   } else {
-    open_file(f, *mfname, false);
+    open_file(f, *fname, false);
   }
   return f;
 }
 
+} // namespace
+
+namespace tbproto {
+
+Run::Run() {}
+
 void Run::write(const Record &record) {
-  auto f = file();
+  auto f = file(mfname);
   write_record(record, f);
   f.close();
 }
