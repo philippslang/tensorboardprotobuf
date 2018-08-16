@@ -6,4 +6,4 @@ before_install:
   - docker pull philipplang/gccprotobuf:latest
 
 script:
-  - docker run --rm --mount type=bind,source=$(pwd),target=/tbproto philipplang/gccprotobuf:latest /bin/bash -c "mkdir build; cd build; cmake ..; make; ./a"
+  - docker run --rm --mount type=bind,source=$(pwd),target=/tbproto philipplang/gccprotobuf:latest /bin/bash -c "cd tbproto; mkdir build; cd build; cmake ..; make; ./a"
