@@ -10,7 +10,7 @@ class Record;
 
 class Run {
 public:
-  Run();
+  Run() = default;
 
   void write(const Record &);
 

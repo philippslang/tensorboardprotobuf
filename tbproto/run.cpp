@@ -58,6 +58,19 @@ void open_file(std::ofstream &f, std::string_view fname, bool is_new) {
   }
 }
 
+std::string make_fname() {
+  std::string fname;
+  const static std::string base = "events.out.tfevents.";
+  char bstr[100];
+  auto t = std::time(nullptr);
+  if (std::strftime(bstr, sizeof(bstr), "%Y%m%dT%H%M%S", std::localtime(&t))) {
+    fname = base + std::string(bstr);
+  } else {
+    throw std::runtime_error("cannot parse time");
+  }
+  return fname;
+}
+
 // Provides a valid file for record writing
 //
 // Uses mfname as proxy of whether file has not been created
@@ -67,14 +80,7 @@ void open_file(std::ofstream &f, std::string_view fname, bool is_new) {
 std::ofstream file(std::optional<std::string> &fname) {
   std::ofstream f;
   if (!fname) {
-    auto t = std::time(nullptr);
-    char bstr[100];
-    if (std::strftime(bstr, sizeof(bstr), "%Y%m%dT%H%M%S",
-                      std::localtime(&t))) {
-      fname = std::string("events.out.tfevents." + std::string(bstr));
-    } else {
-      throw std::runtime_error("cannot parse time");
-    }
+    fname = make_fname();
     open_file(f, *fname, true);
     write_header(f);
   } else {
@@ -86,8 +92,6 @@ std::ofstream file(std::optional<std::string> &fname) {
 } // namespace
 
 namespace tbproto {
-
-Run::Run() {}
 
 void Run::write(const Record &record) {
   auto f = file(mfname);
