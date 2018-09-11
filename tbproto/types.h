@@ -1,6 +1,8 @@
 #ifndef TBPROTO_TYPES_H
 #define TBPROTO_TYPES_H
 
+#include <vector>
+
 namespace tbproto {
 
 struct Scalar {
@@ -15,7 +17,16 @@ struct Tensor {
 };
 
 struct Histogram {
-  double value;
+
+  struct Bin {
+    double min = 0.0;
+    double max = 0.0;
+    int count = 0;
+  };
+
+  double sum_squares = 0.0;
+
+  std::vector<Bin> bins;
 };
 
 } // namespace tbproto

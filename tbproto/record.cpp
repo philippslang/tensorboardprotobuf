@@ -14,9 +14,22 @@ void set_event_summary(tensorflow::Event *e, tensorflow::Summary *s) {
   e->set_allocated_summary(s);
 }
 
-struct ValueTypeVisitor {
+} // namespace
+
+namespace tbproto {
+
+struct Record::RecordPipml {
+  google::protobuf::Arena arena;
+  tensorflow::Event *e = nullptr;
   tensorflow::Summary *s = nullptr;
+  tensorflow::HistogramProto *h = nullptr;
   std::string_view tag;
+
+  RecordPipml()
+      // managed via arena member, tied to instance lifetime
+      : e(google::protobuf::Arena::CreateMessage<tensorflow::Event>(&arena)),
+        s(google::protobuf::Arena::CreateMessage<tensorflow::Summary>(&arena)) {
+  }
 
   void operator()(tbproto::Scalar const &arg) {
     auto *v = s->add_value();
@@ -26,22 +39,9 @@ struct ValueTypeVisitor {
 
   void operator()(tbproto::Tensor const &arg) {}
 
-  void operator()(tbproto::Histogram const &arg) {}
-};
-
-} // namespace
-
-namespace tbproto {
-
-struct Record::RecordPipml {
-  google::protobuf::Arena arena;
-  tensorflow::Event *e;
-  tensorflow::Summary *s;
-
-  RecordPipml()
-      // managed via arena member, tied to instance lifetime
-      : e(google::protobuf::Arena::CreateMessage<tensorflow::Event>(&arena)),
-        s(google::protobuf::Arena::CreateMessage<tensorflow::Summary>(&arena)) {
+  void operator()(tbproto::Histogram const &arg) {
+    h = google::protobuf::Arena::CreateMessage<tensorflow::HistogramProto>(
+        &arena);
   }
 };
 
@@ -63,10 +63,8 @@ void Record::set_time_to_now() {
 
 void Record::add(std::string_view tag,
                  const std::variant<Scalar, Tensor, Histogram> &value) {
-  ValueTypeVisitor value_visitor;
-  value_visitor.s = mproto->s;
-  value_visitor.tag = tag;
-  std::visit(value_visitor, value);
+  mproto->tag = tag;
+  std::visit(*mproto, value);
 }
 
 void Record::set_file_version(std::string_view tag) {
