@@ -6,12 +6,33 @@
 #include <google/protobuf/arena.h>
 
 #include <chrono>
+#include <numeric>
 #include <vector>
 
 namespace {
 
 void set_event_summary(tensorflow::Event *e, tensorflow::Summary *s) {
   e->set_allocated_summary(s);
+}
+
+void to_tensorflow(tbproto::Histogram const &from,
+                   tensorflow::HistogramProto *to) {
+  // https://github.com/lanpa/tensorboardX/blob/9d2cbeb26778cc9784a6a7028e75b7fd0950ce87/tensorboardX/summary.py#L147
+  // https://github.com/tensorflow/tensorflow/blob/9c270922715306efefce848b87dee3690cdddd27/tensorflow/core/lib/histogram/histogram.cc#L201
+  to->Clear();
+  to->set_min(from.min);
+  to->set_max(from.bins.back().max);
+  to->set_sum(
+      std::accumulate(std::begin(from.bins), std::end(from.bins), 0,
+                      [](int running, const tbproto::Histogram::Bin &b) {
+                        return running + b.count;
+                      }));
+  to->set_sum_squares(from.sum_squares);
+  for (const auto &b : from.bins) {
+    // TODO leaves zero buckets for now, see tf implementation
+    to->add_bucket_limit(b.max);
+    to->add_bucket(b.count);
+  }
 }
 
 } // namespace
@@ -42,6 +63,10 @@ struct Record::RecordPipml {
   void operator()(tbproto::Histogram const &arg) {
     h = google::protobuf::Arena::CreateMessage<tensorflow::HistogramProto>(
         &arena);
+    to_tensorflow(arg, h);
+    auto *v = s->add_value();
+    v->set_tag(tag.data());
+    v->set_allocated_histo(h);
   }
 };
 

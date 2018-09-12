@@ -19,13 +19,14 @@ struct Tensor {
 struct Histogram {
 
   struct Bin {
-    double min = 0.0;
+    Bin() = default;
+    Bin(double max, int count) : max(max), count(count) {}
     double max = 0.0;
     int count = 0;
   };
 
+  double min = 0.0;
   double sum_squares = 0.0;
-
   std::vector<Bin> bins;
 };
 

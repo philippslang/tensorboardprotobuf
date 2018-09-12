@@ -6,20 +6,24 @@
 int main(int argc, char const *argv[]) {
   tbproto::Run run;
 
+  tbproto::Histogram histo;
+  histo.bins.emplace_back(tbproto::Histogram::Bin{1.0, 3});
+
   // first iteration (e.g.)
   {
     tbproto::Record rec;
     rec.set_step(0);
-    rec.add("my/value", tbproto::Scalar(0.0));
-    rec.add("my/othervalue", tbproto::Scalar(1.0));
+    rec.add("my/value", tbproto::Scalar{0.0});
+    rec.add("my/othervalue", tbproto::Scalar{1.0});
+    rec.add("my/histo", histo);
     run.write(rec);
   }
   // second iteration (e.g.)
   {
     tbproto::Record rec;
     rec.set_step(1);
-    rec.add("my/value", tbproto::Scalar(1.0));
-    rec.add("my/othervalue", tbproto::Scalar(0.8));
+    rec.add("my/value", tbproto::Scalar{1.0});
+    rec.add("my/othervalue", tbproto::Scalar{0.8});
     run.write(rec);
   }
 

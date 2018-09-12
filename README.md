@@ -52,6 +52,12 @@ or in container
 ```
 docker run -it --rm --mount type=bind,source=$(pwd),target=/tbproto philipplang/gccprotobuf:latest /bin/bash
 ```
+```
+docker run -it --rm -p 6006:6006 --mount type=bind,source=$(pwd),target=/tb tensorboardprotobuf:latest
+tensorboard --logdir /tb
+http://localhost:6006
+```
+
 ## References
 
 https://github.com/tensorflow/tensorflow/
