@@ -1,6 +1,7 @@
 #include "tbproto/record.h"
 #include "tbproto/run.h"
 #include "tbproto/types.h"
+#include <cmath>
 #include <iostream>
 
 int main(int argc, char const *argv[]) {
@@ -8,6 +9,9 @@ int main(int argc, char const *argv[]) {
 
   tbproto::Histogram histo;
   histo.bins.emplace_back(tbproto::Histogram::Bin{1.0, 3});
+  histo.bins.emplace_back(tbproto::Histogram::Bin{2.0, 4});
+  histo.bins.emplace_back(tbproto::Histogram::Bin{3.0, 1});
+  histo.sum_squares = std::pow(0.2, 2);
 
   // first iteration (e.g.)
   {
