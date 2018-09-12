@@ -8,10 +8,11 @@ int main(int argc, char const *argv[]) {
   tbproto::Run run;
 
   tbproto::Histogram histo;
-  histo.bins.emplace_back(tbproto::Histogram::Bin{1.0, 3});
-  histo.bins.emplace_back(tbproto::Histogram::Bin{2.0, 4});
+  histo.bins.emplace_back(tbproto::Histogram::Bin{1.0, 2});
+  histo.bins.emplace_back(tbproto::Histogram::Bin{2.0, 3});
   histo.bins.emplace_back(tbproto::Histogram::Bin{3.0, 1});
-  histo.sum_squares = std::pow(0.2, 2);
+  histo.sum_squares = std::pow(0.2, 2) + std::pow(0.3, 2) + std::pow(1.2, 2) +
+                      std::pow(1.4, 2) + std::pow(1.8, 2) + std::pow(2.2, 2);
 
   // first iteration (e.g.)
   {
@@ -28,6 +29,7 @@ int main(int argc, char const *argv[]) {
     rec.set_step(1);
     rec.add("my/value", tbproto::Scalar{1.0});
     rec.add("my/othervalue", tbproto::Scalar{0.8});
+    rec.add("my/histo", histo);
     run.write(rec);
   }
 
